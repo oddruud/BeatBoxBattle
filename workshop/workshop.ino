@@ -23,16 +23,6 @@ i2ctouchsensor touchsensor; // keep track of 4 pads' states
 long previousMillis = 0;
 long interval = 100;
 
-void setup() {
-  pinMode(d3, INPUT);
-  pinMode(d4, INPUT);
-
-  Wire.begin(); // needed by the GroveMultiTouch lib
-  touchsensor.initialize(); // initialize the feelers     // initialize the containers
-
-  Serial.begin(9600);
-}
-
 #define N_DIGITAL_PINS 8
 
 int lastValuesD[N_DIGITAL_PINS] = {LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW};
@@ -50,6 +40,9 @@ void setup() {
     lastAnalogValue[0] = map(analogRead(a0), 0, 1023, 0, 127);
     lastAnalogValue[1] = map(analogRead(a1), 0, 900, 0, 127);
 
+    Wire.begin(); // needed by the GroveMultiTouch lib
+    touchsensor.initialize(); // initialize the feelers     // initialize the containers
+    
     Serial.begin(9600);
 }
 
