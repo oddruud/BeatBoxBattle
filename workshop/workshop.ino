@@ -63,7 +63,7 @@ void readAnalog(byte port) {
         Serial.print("Potmeter : ");
         Serial.println(currentValue[port]);
       } else {
-        MIDImessage(noteON + port + 1, currentValue[port], 100);
+        MIDImessage(noteON + port, currentValue[port], 100);
       }   
     }
   }
@@ -88,7 +88,7 @@ void readDigital(int pin, int channel) {
         if (DEBUG) {
           Serial.println("PUSHED");
         } else {
-          MIDImessage(channel, 60, 100);
+          MIDImessage(noteON + pin + 4, 60, 100);
         }
       }
     }
@@ -104,11 +104,11 @@ void readI2CSensor(void) {
     touchsensor.getTouchState();
   }
 
-  for (int i = 0; i < 12; i++)
+  for (int i = 0; i < 4; i++)
   {
     if (touchsensor.touched & (1 << i))
     {
-      MIDImessage(i + 12, 60, 100);
+      MIDImessage(noteON + i + 12, 60, 100);
     }
   }
 }
@@ -123,8 +123,8 @@ void loop() {
 }
 
 //send MIDI message (noteON, note 60, loudness)
-void MIDImessage(byte channel, byte data1, byte data2) {
-  Serial.write( ( (channel - 1) % 16) | noteON); // noteOn command is 144, least significant 4 bits select channel, so max channel is 15! -1 because the commands are 0 indexed!
+void MIDImessage(byte cmd, byte data1, byte data2) {
+  Serial.write(cmd); // noteOn command is 144, least significant 4 bits select channel, so max channel is 15! -1 because the commands are 0 indexed!
   Serial.write(data1);
   Serial.write(data2);
 }
