@@ -1,3 +1,6 @@
+// +--------------+
+// | ADE Workshop |
+// +--------------+
 #include "Arduino.h"
 #include "UltrasonicSensor.h"
 
@@ -17,7 +20,9 @@ void UltrasonicSensor::trigger(){
   digitalWrite(this->pingPin, LOW);
 }
 
-float UltrasonicSensor::catchEcho(){
+
+
+int UltrasonicSensor::catchEcho(){
   // Catch the echo of the ultrasonic sensor
   // Switch pin back to input
   pinMode(this->pingPin, INPUT);
@@ -28,6 +33,16 @@ float UltrasonicSensor::catchEcho(){
   // Speed of sound = 343m/s -> 29.15us per cm
   // Sound travels towards an object, bounces off and travels back. So the time measured is the 
   // distance time 2. So devide by 2 (multiply by 0.5 for faster processing)
-  return us / 29.15 * 0.5;
+  //return us / 29.15 * 0.5;
+
+  // Clamp distance to 30cm first
+  us = min(us, 1750);
+  // Return mapped value for Ableton (0 ~ 127, inverted so closer hand means higher signal)
+  return 127 - map(us, 0, 1750, 0, 127);
+}
+
+int UltrasonicSensor::measure(){
+  trigger();
+  return catchEcho();
 }
 
