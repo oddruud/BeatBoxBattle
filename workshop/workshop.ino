@@ -1,13 +1,17 @@
-const int a0 = A0; //rotary (map value 0-1023)
-const int a1 = A1; //light (map value 0-900)
-const int a2 = A2;
-const int a3 = A3;
+#define a0 A0 //rotary (map value 0-1023)
+#define a1 A1 //light (map value 0-900)
+#define a2 A2
+#define a3 A3
 
-const int d3 = 3; //button
-const int d4 = 4; //touch
-const int d5 = 5; 
+#define d2 2
+#define d3 3
+#define d4 4
+#define d5 5
+#define d6 6
+#define d7 7
 
-
+#define DEBUG 0
+ 
 byte lastValueA0 = 0;
 byte currentValueA0;
 unsigned long lastDebounceTimeA0 = 0;  
@@ -16,20 +20,8 @@ byte lastValueA1 = 0;
 byte currentValueA1;
 unsigned long lastDebounceTimeA1 = 0;  
 
-int currentValueD3;
-int lastValueD3 = LOW;
-unsigned long lastDebounceTimeD3 = 0;  // the last time the output pin was toggled
-
-int currentValueD4;
-int lastValueD4 = LOW;
-unsigned long lastDebounceTimeD4 = 0;  
-
-int currentValueD5;
-int lastValueD5 = LOW;
-unsigned long lastDebounceTimeD5 = 0;  
-
 byte noteON = 144;//note on command
-unsigned long debounceDelay = 50;    // the debounce time; increase if the output flickers
+unsigned long debounceDelay = 10;    // the debounce time; increase if the output flickers
 unsigned long debounceDelayAnalog = 10;    // the debounce time; increase if the output flickers
 
 void setup() {
@@ -40,6 +32,38 @@ void setup() {
     lastValueA1 = map(analogRead(a1), 0, 900, 0, 127);
     
     Serial.begin(9600);
+}
+
+#define N_DIGITAL_PINS 8
+
+int lastValuesD[N_DIGITAL_PINS] = {LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW};
+int currentValuesD[N_DIGITAL_PINS];
+int lastDebounceTimeD[N_DIGITAL_PINS];
+
+void readDigital(int pin, int channel) {
+    int readingPin = digitalRead(pin);
+      
+    if (readingPin != lastValuesD[pin]) {
+      // reset the debouncing timer
+      lastDebounceTimeD[pin] = millis();
+    }
+
+    if ((millis() - lastDebounceTimeD[pin]) > debounceDelay) {  
+      // if the state has changed:
+      if (readingPin != currentValuesD[pin]) {
+        currentValuesD[pin] = readingPin;
+  
+        // only toggle the LED if the new button state is HIGH
+        if (currentValuesD[pin] == HIGH) {
+          if (DEBUG) {
+              Serial.println("PUSHED");
+          } else {
+            MIDImessage(channel, 60, 100);
+          }
+        }
+      }
+    }
+    lastValuesD[pin] = readingPin;
 }
 
 void loop() {
@@ -94,87 +118,13 @@ void loop() {
 
     
 /** DIGITAL INPUT D3 **/
-    int readingD3 = digitalRead(d3);
-    
-    if (readingD3 != lastValueD3) {
-      // reset the debouncing timer
-      lastDebounceTimeD3 = millis();
-    }
-
-    if ((millis() - lastDebounceTimeD3) > debounceDelay) {  
-      // if the state has changed:
-      if (readingD3 != currentValueD3) {
-        currentValueD3 = readingD3;
-  
-        // only toggle the LED if the new button state is HIGH
-        if (currentValueD3 == HIGH) {
-//          Serial.println("PUSH");
-          MIDImessage(noteON, 60, 100);
-        }
-      }
-    }
-
-    lastValueD3 = readingD3;
-/** EOF D3 **/
-
-
-
-/** DIGITAL INPUT D4 **/
-    int readingD4 = digitalRead(d4);
-    
-    if (readingD4 != lastValueD4) {
-      // reset the debouncing timer
-      lastDebounceTimeD4 = millis();
-    }
-
-    if ((millis() - lastDebounceTimeD4) > debounceDelay) {  
-      // if the state has changed:
-      if (readingD4 != currentValueD4) {
-        currentValueD4 = readingD4;
-  
-        // only toggle the LED if the new button state is HIGH
-        if (currentValueD4 == HIGH) {
-//          Serial.println("TOUCH");
-          MIDImessage(noteON, 60, 100);
-        }
-      }
-    }
-
-    lastValueD4 = readingD4;
-/** EOF D4 **/
-
-
-
-/** DIGITAL INPUT D5 **/
-    int readingD5 = digitalRead(d5);
-    
-    if (readingD5 != lastValueD5) {
-      // reset the debouncing timer
-      lastDebounceTimeD5 = millis();
-    }
-
-    if ((millis() - lastDebounceTimeD5) > debounceDelay) {  
-      // if the state has changed:
-      if (readingD5 != currentValueD5) {
-        currentValueD5 = readingD5;
-  
-        // only toggle the LED if the new button state is HIGH
-        if (currentValueD5 == HIGH) {
-//          Serial.println("LIGHT");
-          MIDImessage(noteON, 60, 100);
-        }
-      }
-    }
-
-    lastValueD5 = readingD5;
-/** EOF D5 **/
-
-
+  readDigital(d3, 1);
+  readDigital(d4, 2);
 }
 
 //send MIDI message (noteON, note 60, loudness)
-void MIDImessage(byte command, byte data1, byte data2) {
-  Serial.write(command);
+void MIDImessage(byte channel, byte data1, byte data2) {
+  Serial.write( ( (channel - 1) % 16) | noteON); // noteOn command is 144, least significant 4 bits select channel, so max channel is 15! -1 because the commands are 0 indexed!
   Serial.write(data1);
   Serial.write(data2);
 }
