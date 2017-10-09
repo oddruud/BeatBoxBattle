@@ -29,7 +29,7 @@ void setup() {
     pinMode(d3, INPUT);
     pinMode(d4, INPUT);
 
-    lastAnalogValue[0] = map(analogRead(a0), 0, 1023, 127, 0);
+    lastAnalogValue[0] = map(analogRead(a0), 0, 1023, 0, 127);
     lastAnalogValue[1] = map(analogRead(a1), 0, 900, 0, 127);
 
     Serial.begin(9600);
