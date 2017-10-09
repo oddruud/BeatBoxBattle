@@ -48,9 +48,12 @@ void readAnalog(byte port) {
     // if the state has changed:
     if (mappedValue != currentValue[port]) {
       currentValue[port] = mappedValue;
-//        Serial.print("Potmeter : ");
-//        Serial.println(currentValueA0);
-      MIDImessage(noteON + port + 1, currentValue[port], 100);
+      if (DEBUG) {
+        Serial.print("Potmeter : ");
+        Serial.println(currentValueA0);
+      } else {
+        MIDImessage(noteON + port + 1, currentValue[port], 100);
+      }   
     }
   }
 
