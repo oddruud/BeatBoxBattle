@@ -12,27 +12,9 @@
 
 #define DEBUG 0
 
-byte lastValueA0 = 0;
-byte currentValueA0;
-unsigned long lastDebounceTimeA0 = 0;
-
-byte lastValueA1 = 0;
-byte currentValueA1;
-unsigned long lastDebounceTimeA1 = 0;
-
 byte noteON = 144;//note on command
 unsigned long debounceDelay = 10;    // the debounce time; increase if the output flickers
 unsigned long debounceDelayAnalog = 10;    // the debounce time; increase if the output flickers
-
-void setup() {
-    pinMode(d3, INPUT);
-    pinMode(d4, INPUT);
-
-    lastValueA0 = map(analogRead(a0), 0, 1023, 127, 0);
-    lastValueA1 = map(analogRead(a1), 0, 900, 0, 127);
-
-    Serial.begin(9600);
-}
 
 #define N_DIGITAL_PINS 8
 
@@ -42,6 +24,16 @@ int lastDebounceTimeD[N_DIGITAL_PINS];
 byte lastAnalogValue[] = {0,0,0,0};
 byte currentValue[] = {0,0,0,0};
 unsigned long lastDebounceTime[] = {0,0,0,0};
+
+void setup() {
+    pinMode(d3, INPUT);
+    pinMode(d4, INPUT);
+
+    lastAnalogValue[0] = map(analogRead(a0), 0, 1023, 127, 0);
+    lastAnalogValue[1] = map(analogRead(a1), 0, 900, 0, 127);
+
+    Serial.begin(9600);
+}
 
 void readAnalog(byte port) {
   int reading = analogRead(port);
