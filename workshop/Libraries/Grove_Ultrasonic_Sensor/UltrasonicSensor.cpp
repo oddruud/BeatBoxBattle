@@ -1,7 +1,6 @@
 // +--------------+
 // | ADE Workshop |
 // +--------------+
-
 #include "Arduino.h"
 #include "UltrasonicSensor.h"
 
