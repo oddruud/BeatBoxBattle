@@ -2,8 +2,8 @@
 by SeeeedStudio--lg
 2012/9/12
 */
-#ifndef i2c_touch.sensor_h
-#define i2c_touch.sensor_h
+#ifndef i2c_touch_sensor_h
+#define i2c_touch_sensor_h
 //#include "WProgram.h"
 #include "Arduino.h"
 #include <Wire.h>
