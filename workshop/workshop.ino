@@ -1,5 +1,9 @@
 #include <Wire.h> // include I2C library
 #include <i2c_touch_sensor.h>
+#include "DigitalSensor.hpp"
+#include "AnalogSensor.hpp"
+
+#define MAX_NUMBER_OF_SENSORS 32
 
 #define a0 A0 //rotary (map value 0-1023)
 #define a1 A1 //light (map value 0-900)
@@ -23,78 +27,43 @@ i2ctouchsensor touchsensor; // keep track of 4 pads' states
 long previousMillis = 0;
 long interval = 100;
 
-#define N_DIGITAL_PINS 8
+Sensor* listOfSensors[MAX_NUMBER_OF_SENSORS];
+int listSize = 0;
 
-int lastValuesD[N_DIGITAL_PINS] = {LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW};
-int currentValuesD[N_DIGITAL_PINS];
-int lastDebounceTimeD[N_DIGITAL_PINS];
-
-byte lastAnalogValue[] = {0,0,0,0};
-byte currentValue[] = {0,0,0,0};
-unsigned long lastDebounceTime[] = {0,0,0,0};
+void insertSensor(Sensor* newSensor) {
+  listOfSensors[listSize] = newSensor;
+  listSize++;
+}
 
 void setup() {
-    pinMode(d3, INPUT);
-    pinMode(d4, INPUT);
 
-    lastAnalogValue[0] = map(analogRead(a0), 0, 1023, 0, 127);
-    lastAnalogValue[1] = map(analogRead(a1), 0, 900, 0, 127);
+  insertSensor(new DigitalSensor(3,1));
+  insertSensor(new AnalogSensor(0,2));
 
-    Wire.begin(); // needed by the GroveMultiTouch lib
-    touchsensor.initialize(); // initialize the feelers     // initialize the containers
+    //Wire.begin(); // needed by the GroveMultiTouch lib
+    //touchsensor.initialize(); // initialize the feelers     // initialize the containers
     
     Serial.begin(9600);
+    Serial.println("Setup done");
 }
 
-void readAnalog(byte port) {
-  int reading = analogRead(port);
-  byte mappedValue = map(reading, 0, 1023, 0, 127); //map value to 127 - 0
+void loop() {
 
-  if (mappedValue != lastAnalogValue[port]) {
-    // reset the debouncing timer
-    lastDebounceTime[port] = millis();
+  //readI2CSensor();
+
+
+  for(int i = 0 ; i < listSize ; i++)
+  {
+    int value = listOfSensors[i]->measureValue();
+
+    listOfSensors[i]->setTone(value);
   }
 
-  if ((millis() - lastDebounceTime[port]) > debounceDelayAnalog) {
-    // if the state has changed:
-    if (mappedValue != currentValue[port]) {
-      currentValue[port] = mappedValue;
-      if (DEBUG) {
-        Serial.print("Potmeter : ");
-        Serial.println(currentValue[port]);
-      } else {
-        MIDImessage(noteON + port, currentValue[port], 100);
-      }   
-    }
-  }
-  lastAnalogValue[port] = mappedValue;
+  delay(200);
 }
 
-void readDigital(int pin, int channel) {
-  int readingPin = digitalRead(pin);
 
-  if (readingPin != lastValuesD[pin]) {
-    // reset the debouncing timer
-    lastDebounceTimeD[pin] = millis();
-  }
 
-  if ((millis() - lastDebounceTimeD[pin]) > debounceDelay) {
-    // if the state has changed:
-    if (readingPin != currentValuesD[pin]) {
-      currentValuesD[pin] = readingPin;
-
-      // only toggle the LED if the new button state is HIGH
-      if (currentValuesD[pin] == HIGH) {
-        if (DEBUG) {
-          Serial.println("PUSHED");
-        } else {
-          MIDImessage(noteON + pin + 4, 60, 100);
-        }
-      }
-    }
-  }
-  lastValuesD[pin] = readingPin;
-}
 
 void readI2CSensor(void) {
   unsigned long currentMillis = millis();
@@ -111,15 +80,6 @@ void readI2CSensor(void) {
       MIDImessage(noteON + i + 12, 60, 100);
     }
   }
-}
-
-void loop() {
-  readDigital(d3, 1);
-  readDigital(d4, 2);
-
-  readI2CSensor();
-
-  readAnalog(0);
 }
 
 //send MIDI message (noteON, note 60, loudness)
