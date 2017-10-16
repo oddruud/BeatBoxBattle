@@ -10,11 +10,19 @@ Sensor::Sensor(int pinIn, int channelIn, int toneIn)
 : pin(pinIn), channel(channelIn), tone(toneIn)
 {
   ASSERT(pinIn < CHANNEL_MAX); 
-  lastTimeValueChanged = millis();
+  
 }
 
 void Sensor::setTone(int value) {
-  MIDImessage(144 + channel, tone, 100);
+  MIDImessage(144 + channel, value, 100);
+}
+
+void Sensor::measureAndSetTone(void) {
+  int value = measureValue();
+  if (value != lastValue) {
+    setTone(value);
+    lastValue = value;
+  }
 }
 
 //send MIDI message (noteON, note 60, loudness)
@@ -24,10 +32,10 @@ void Sensor::MIDImessage(int cmd, int data1, int data2) {
   Serial.write(data1);
   Serial.write(data2);
 #else
-  Serial.print("\nmidimsg: ");
-  Serial.print(cmd); // noteOn command is 144, least significant 4 bits select channel, so max channel is 15! -1 because the commands are 0 indexed!
+  Serial.print("\nch: ");
+  Serial.print(cmd - 144);
+  Serial.print(" d1: ");
   Serial.print(data1);
-  Serial.print(data2);
 #endif
 }
 

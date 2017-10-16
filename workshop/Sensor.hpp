@@ -1,6 +1,7 @@
 #ifndef _SENSOR_HPP_
 #define _SENSOR_HPP_
 
+#include "Arduino.h"
 
 #define DEBUG 1
 
@@ -16,14 +17,17 @@ class Sensor {
 
   virtual void init(void) = 0;
   virtual int measureValue(void) = 0;
+  
+  virtual void measureAndSetTone(void);
+
   void setTone(int value);
   void MIDImessage(int cmd, int data1, int data2);
   void sensorAssert(int check, char* assertString, char* filename, int lineNumber);
+  
 	int pin;
 	int channel;
 	int tone;
   
-  long lastTimeValueChanged;
   int lastValue;
 };
 

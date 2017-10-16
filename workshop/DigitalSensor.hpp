@@ -7,5 +7,7 @@ class DigitalSensor: public Sensor {
   public:
   void init(void);
   int measureValue(void);
+
+  long lastTimeValueChanged;
   
 };
