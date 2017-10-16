@@ -5,30 +5,25 @@
 
 #define DEBUG 1
 
-#define CHANNEL_MAX 16
-
 #define ASSERT(x) sensorAssert(x, #x, __FILE__, __LINE__)
 
 class Sensor {
-	public:
-	
-	Sensor(int pinIn, int channelIn);
-	Sensor(int pinIn, int channelIn, int toneIn);
+  public:
+    Sensor(int pinIn, int channelIn);
 
-  virtual void init(void) = 0;
-  virtual int measureValue(void) = 0;
-  
-  virtual void measureAndSetTone(void);
+    virtual int measureValue(void) = 0;
 
-  void setTone(int value);
-  void MIDImessage(int cmd, int data1, int data2);
-  void sensorAssert(int check, char* assertString, char* filename, int lineNumber);
-  
-	int pin;
-	int channel;
-	int tone;
-  
-  int lastValue;
+    virtual void measureAndSetTone(void);
+
+    void setTone(int value);
+    void MIDImessage(int cmd, int data1, int data2);
+
+    int pin;      // Pin on Arduino, can be analog or digital (or in case of touchSensor obsolete)
+    int channel;  // Midi channel, on which channel to transmit the tone of the sensor
+
+    int lastValue;
 };
+
+void sensorAssert(int check, const char* checkInString, const char* filename, int lineNumber);
 
 #endif // _SENSOR_HPP_

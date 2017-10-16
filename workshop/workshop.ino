@@ -2,15 +2,15 @@
 #include "DigitalSensor.hpp"
 #include "AnalogSensor.hpp"
 #include "TouchSensor.hpp"
+#include "UltrasonicRanger.hpp"
 
 #define MAX_NUMBER_OF_SENSORS 32
 
-Sensor* listOfSensors[MAX_NUMBER_OF_SENSORS];
-int listSize = 0;
+static Sensor* listOfSensors[MAX_NUMBER_OF_SENSORS];
+static int listSize = 0;
 
-void insertSensor(Sensor* newSensor) {
+void insertSensor(Sensor* newSensor) { 
   if (listSize != MAX_NUMBER_OF_SENSORS) {
-    newSensor->init();
     listOfSensors[listSize] = newSensor;
     listSize++;
   }
@@ -18,22 +18,28 @@ void insertSensor(Sensor* newSensor) {
 
 void setup() {
   Serial.begin(9600);
+  // DO NOT MODIFY CODE ABOVE THIS LINE
+  
+  insertSensor(new DigitalSensor(3, 1, 40)); // button
+  insertSensor(new DigitalSensor(4, 1, 50)); // button
+  
+  insertSensor(new AnalogSensor(0, 2, 690)); //rotary
+  insertSensor(new AnalogSensor(1, 3, 500)); //light
+  insertSensor(new AnalogSensor(2, 4)); //touch
 
-  insertSensor(new DigitalSensor(3, 1));
-  insertSensor(new AnalogSensor(0, 2));
-  insertSensor(new TouchSensor(0, 3));
+  insertSensor(new TouchSensor(0, 5));
+  
+  insertSensor(new UltrasonicRanger(8, 6));
 
-  Serial.println("Setup done");
+  // DO NOT MODIFY CODE BELOW THIS LINE
 }
 
 void loop() {
-
   for (int i = 0 ; i < listSize ; i++)
   {
     listOfSensors[i]->measureAndSetTone();
   }
-
-  delay(100);
+  delay(50);
 }
 
 

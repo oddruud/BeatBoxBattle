@@ -1,13 +1,17 @@
 #include "AnalogSensor.hpp"
 
-void AnalogSensor::init(void) {
-  maxValue = 690; // Default value
-}
+AnalogSensor::AnalogSensor(int pinIn, int channelIn)
+  : AnalogSensor(pinIn, channelIn, 1023)
+{}
+
+AnalogSensor::AnalogSensor(int pinIn, int channelIn, int maxValueIn)
+  : Sensor(pinIn, channelIn), maxValue(maxValueIn)
+{}
 
 int AnalogSensor::measureValue(void) {
   int retVal = 0;
   int reading = analogRead(pin);
-  
+
   int filteredReading = filterValue(reading);
 
   retVal = map(filteredReading, 0, maxValue, 0, 127);

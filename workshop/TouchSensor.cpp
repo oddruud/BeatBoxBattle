@@ -2,7 +2,9 @@
 
 #define TIME_BETWEEN_CHANGES 10
 
-void TouchSensor::init(void) {
+TouchSensor::TouchSensor(int pinIn, int channelIn)
+  : Sensor(pinIn, channelIn)
+{
   Wire.begin(); // needed by the GroveMultiTouch lib
   touchsensor.initialize();
 

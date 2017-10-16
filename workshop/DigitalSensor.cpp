@@ -2,7 +2,13 @@
 
 #define TIME_BETWEEN_CHANGES 10
 
-void DigitalSensor::init(void) {
+DigitalSensor::DigitalSensor(int pinIn, int channelIn)
+  : DigitalSensor(pinIn, channelIn, 60)
+{}
+
+DigitalSensor::DigitalSensor(int pinIn, int channelIn, int toneIn)
+  : Sensor(pinIn, channelIn), tone(toneIn)
+{
   pinMode(pin, INPUT);
   lastTimeValueChanged = millis();
 }
@@ -10,11 +16,14 @@ void DigitalSensor::init(void) {
 int DigitalSensor::measureValue(void) {
   int retVal = 0;
 
-  if( (millis() - lastTimeValueChanged) > TIME_BETWEEN_CHANGES) 
+  if ( (millis() - lastTimeValueChanged) > TIME_BETWEEN_CHANGES)
   {
-    retVal = digitalRead(pin);
+    if (digitalRead(pin) )
+    {
+      retVal = tone;
+    }
     lastTimeValueChanged = millis();
   }
-  
+
   return retVal;
 }
