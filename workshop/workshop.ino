@@ -28,8 +28,6 @@ Serial.begin(9600);
   insertSensor(new DigitalSensor(3,1));
   insertSensor(new AnalogSensor(0,2));
 
-  insertSensor(new AnalogSensor(20,2));
-
     //Wire.begin(); // needed by the GroveMultiTouch lib
     //touchsensor.initialize(); // initialize the feelers     // initialize the containers
     
