@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 #define ASSERT(x) sensorAssert(x, #x, __FILE__, __LINE__)
 
