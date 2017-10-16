@@ -7,16 +7,17 @@
 
 #define N_TOUCHPADS 4
 
-class TouchSensor: public Sensor {
+class TouchSensor: public Sensor
+{
   public:
     using Sensor::Sensor;
-    TouchSensor(int pinIn, int channelIn);
+    TouchSensor(int channelIn);
 
-    int measureValue(void);
-    void measureAndSetTone(void);
+    int measureValue(void);       // Overloaded funtion to measure the values of the touch sensors
+    void measureAndSetTone(void); // Overloaded funtion to trigger the measure values function and trigger setTones for each touch sensor independly
 
-    i2ctouchsensor touchsensor;
-    long lastTimeValueChanged;
+    i2ctouchsensor touchsensor;   // Object of the touchsensor class (3rd party), used to read out the touch sensor
+    long lastTimeValueChanged;    // Timestamp of the last time the output value of the touch sensors changed, used to limit the number of changes (acts as a rudementary filter)
 };
 
 #endif //_TOUCHSENSOR_HPP_

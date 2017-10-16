@@ -13,7 +13,8 @@ DigitalSensor::DigitalSensor(int pinIn, int channelIn, int toneIn)
   lastTimeValueChanged = millis();
 }
 
-int DigitalSensor::measureValue(void) {
+int DigitalSensor::measureValue(void)
+{
   int retVal = 0;
 
   if ( (millis() - lastTimeValueChanged) > TIME_BETWEEN_CHANGES)

@@ -6,7 +6,8 @@ UltrasonicRanger::UltrasonicRanger(int pinIn, int channelIn)
   usSensor = new UltrasonicSensor(pin);
 }
 
-int UltrasonicRanger::measureValue(void) {
+int UltrasonicRanger::measureValue(void)
+{
   int reading = usSensor->measure();
 
   return filterValue(reading);

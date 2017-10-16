@@ -8,10 +8,10 @@ AnalogSensor::AnalogSensor(int pinIn, int channelIn, int maxValueIn)
   : Sensor(pinIn, channelIn), maxValue(maxValueIn)
 {}
 
-int AnalogSensor::measureValue(void) {
+int AnalogSensor::measureValue(void)
+{
   int retVal = 0;
   int reading = analogRead(pin);
-
   int filteredReading = filterValue(reading);
 
   retVal = map(filteredReading, 0, maxValue, 0, 127);
@@ -19,15 +19,12 @@ int AnalogSensor::measureValue(void) {
   return retVal;
 }
 
-int AnalogSensor::filterValue(int inputValue) {
+int AnalogSensor::filterValue(int inputValue)
+{
   int filteredReading = ( (SMOOTHING_BUFFER * filterBuffer) + inputValue) / (SMOOTHING_BUFFER + 1);
   filterBuffer = filteredReading;
 
   return filteredReading;
 }
 
-void AnalogSensor::setMaxValue(int newMaxValue)
-{
-  maxValue = newMaxValue;
-}
 

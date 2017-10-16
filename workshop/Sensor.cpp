@@ -6,22 +6,28 @@ Sensor::Sensor(int pinIn, int channelIn)
   : pin(pinIn), channel(channelIn)
 {}
 
-void Sensor::setTone(int value) {
+void Sensor::setTone(int value)
+{
   MIDImessage(144 + channel, max(0, min(value, 127) ), 100);
 }
 
-void Sensor::measureAndSetTone(void) {
+void Sensor::measureAndSetTone(void)
+{
   int value = measureValue();
-  if (value != lastValue) {
+
+  if (value != lastValue)
+  {
     setTone(value);
     lastValue = value;
   }
 }
 
 //send MIDI message (noteON, note 60, loudness)
-void Sensor::MIDImessage(int cmd, int data1, int data2) {
+void Sensor::MIDImessage(int cmd, int data1, int data2)
+{
   ASSERT(cmd >= 144 && cmd < 160);
   ASSERT(data1 >= 0 && data1 < 128);
+
 #if DEBUG
   Serial.print("\nch: ");
   Serial.print(cmd - 144);
@@ -34,8 +40,10 @@ void Sensor::MIDImessage(int cmd, int data1, int data2) {
 #endif
 }
 
-void sensorAssert(int check, const char* checkInString, const char* filename, int lineNumber) {
-  while (!check) {
+void sensorAssert(int check, const char* checkInString, const char* filename, int lineNumber)
+{
+  while (!check)
+  {
     Serial.print("Assertion failed!\n");
     Serial.print(checkInString);
     Serial.print("\nFile: ");

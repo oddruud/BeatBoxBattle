@@ -2,8 +2,8 @@
 
 #define TIME_BETWEEN_CHANGES 10
 
-TouchSensor::TouchSensor(int pinIn, int channelIn)
-  : Sensor(pinIn, channelIn)
+TouchSensor::TouchSensor(int channelIn)
+  : Sensor(0, channelIn)
 {
   Wire.begin(); // needed by the GroveMultiTouch lib
   touchsensor.initialize();
@@ -11,7 +11,8 @@ TouchSensor::TouchSensor(int pinIn, int channelIn)
   lastTimeValueChanged = millis();
 }
 
-int TouchSensor::measureValue(void) {
+int TouchSensor::measureValue(void)
+{
   int retVal = 0;
 
   if ( (millis() - lastTimeValueChanged) > TIME_BETWEEN_CHANGES)
@@ -20,12 +21,16 @@ int TouchSensor::measureValue(void) {
     touchsensor.getTouchState();
     retVal = touchsensor.touched;
   }
+
+  return retVal;
 }
 
-void TouchSensor::measureAndSetTone(void) {
+void TouchSensor::measureAndSetTone(void)
+{
   int value = measureValue();
 
-  if (value != lastValue) {
+  if (value != lastValue)
+  {
     for (int i = 0 ; i < N_TOUCHPADS ; i++)
     {
       if (value & (1 << i))
