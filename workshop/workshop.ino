@@ -3,8 +3,14 @@
 #include "AnalogSensor.hpp"
 #include "TouchSensor.hpp"
 #include "UltrasonicRanger.hpp"
+#include <Adafruit_NeoPixel.h>
 
 #define MAX_NUMBER_OF_SENSORS 32
+
+#define LEDPIN 3 
+#define LEDS 39
+
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDS, LEDPIN, NEO_GRB + NEO_KHZ800);
 
 static Sensor* listOfSensors[MAX_NUMBER_OF_SENSORS];
 static int listSize = 0;
@@ -25,13 +31,18 @@ void setup()
   // DO NOT MODIFY CODE ABOVE THIS LINE
   /////////////////////////////////////
 
+   strip.begin();
+     // Initialize all pixels to 'off'
+    for(uint16_t i=0; i<strip.numPixels(); i++) {
+      strip.setPixelColor(i, strip.Color(253, 200, 10));
+    }
+    strip.show();
+
 //  DigitalSensor(pin, channel, note)
-  insertSensor(new DigitalSensor(3, 1, 40));  // button
   insertSensor(new DigitalSensor(4, 1, 50));  // button
 
 //  AnalogSensor(pin, channel, maxValue)
   insertSensor(new AnalogSensor(0, 2, 690));  //rotary
-  insertSensor(new AnalogSensor(1, 3, 500));  //light
 
 //  TouchSensor(channel)
   insertSensor(new TouchSensor(5));
