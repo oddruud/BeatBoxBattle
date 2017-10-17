@@ -3,7 +3,7 @@
 #ifndef _ANALOGSENSOR_HPP_
 #define _ANALOGSENSOR_HPP_
 
-#define SMOOTHING_BUFFER 2
+#define SMOOTHING_BUFFER 8
 
 class AnalogSensor: public Sensor
 {

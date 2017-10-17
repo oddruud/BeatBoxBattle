@@ -25,15 +25,18 @@ void setup()
   // DO NOT MODIFY CODE ABOVE THIS LINE
   /////////////////////////////////////
 
+//  DigitalSensor(pin, channel, note)
   insertSensor(new DigitalSensor(3, 1, 40));  // button
   insertSensor(new DigitalSensor(4, 1, 50));  // button
 
+//  AnalogSensor(pin, channel, maxValue)
   insertSensor(new AnalogSensor(0, 2, 690));  //rotary
   insertSensor(new AnalogSensor(1, 3, 500));  //light
-  insertSensor(new AnalogSensor(2, 4));       //touch
 
+//  TouchSensor(channel)
   insertSensor(new TouchSensor(5));
 
+//  UltrasonicRanger(pin, channel)
   insertSensor(new UltrasonicRanger(8, 6));
   /////////////////////////////////////
   // DO NOT MODIFY CODE BELOW THIS LINE
@@ -46,7 +49,7 @@ void loop()
   {
     listOfSensors[i]->measureAndSetTone();
   }
-  delay(50);
+  delay(10);
 }
 
 
