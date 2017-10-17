@@ -5,7 +5,7 @@
 #include <Wire.h> // include I2C library
 #include <i2c_touch_sensor.h>
 
-#define N_TOUCHPADS 4
+#define N_TOUCHPADS 12            // 12 instead of the real 8, because 4 pins on the I2C sensor are skipped!
 
 class TouchSensor: public Sensor
 {

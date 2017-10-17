@@ -33,6 +33,10 @@ void TouchSensor::measureAndSetTone(void)
   {
     for (int i = 0 ; i < N_TOUCHPADS ; i++)
     {
+	  if (i == 4) 
+	  {
+		  i = 8; // Workaround for the fact that the touch sensors are connected to pins 0,1,2,3 and 8,9,10,11
+	  }
       if (value & (1 << i))
       {
         setTone(i);
