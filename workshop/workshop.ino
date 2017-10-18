@@ -36,22 +36,8 @@ void setup()
 
 //Ultrasonic RANGE (Filters)
  insertSensor(new UltrasonicRanger(7, 7));
- insertSensor(new UltrasonicRanger(7, 8));
+ insertSensor(new UltrasonicRanger(8, 8));
 
-//  DigitalSensor(pin, channel, note)
-  //insertSensor(new DigitalSensor(3, 1, 40));  // button
-//  insertSensor(new DigitalSensor(4, 1, 50));  // button
-//  AnalogSensor(pin, channel, maxValue)
-  //insertSensor(new AnalogSensor(1, 2, 690));  //rotary
- //insertSensor(new AnalogSensor(3, 3, 500));  //light
-//  TouchSensor(channel)
- // insertSensor(new TouchSensor(5));
-//  UltrasonicRanger(pin, channel)
- // insertSensor(new UltrasonicRanger(4, 6));
-
-
-
- 
   /////////////////////////////////////
   // DO NOT MODIFY CODE BELOW THIS LINE
   /////////////////////////////////////
