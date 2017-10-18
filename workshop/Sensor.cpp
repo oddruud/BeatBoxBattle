@@ -8,10 +8,10 @@ Sensor::Sensor(int pinIn, int channelIn)
 
 void Sensor::setTone(int value)
 {
-  if(value != 0)
-  {
+ // if(value != 0)
+ // {
     MIDImessage(144 + channel, max(0, min(value, 127) ), 100);
-  }
+ // }
 }
 
 void Sensor::measureAndSetTone(void)
