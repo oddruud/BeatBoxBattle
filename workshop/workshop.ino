@@ -27,9 +27,9 @@ void setup()
 
 //Brunos switchboard:
  insertSensor(new DigitalSensor(2, 1, 40));  // light
- insertSensor(new DigitalSensor(3, 1, 50));  // light
- insertSensor(new DigitalSensor(4, 1, 60));  // light
- insertSensor(new DigitalSensor(5, 1, 70));  // light
+ insertSensor(new DigitalSensor(3, 2, 50));  // light
+ insertSensor(new DigitalSensor(4, 3, 60));  // light
+ insertSensor(new DigitalSensor(5, 4, 70));  // light
  
 //Ultrasonic RANGE (instrument slider)
  insertSensor(new UltrasonicRanger(6, 6));
