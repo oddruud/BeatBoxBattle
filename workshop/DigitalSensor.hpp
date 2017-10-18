@@ -14,6 +14,7 @@ class DigitalSensor: public Sensor
 
     long lastTimeValueChanged;  // Timestamp of the last time the output value of the digital sensor changed, used to limit the number of changes (acts as a rudementary filter)
     int tone;                   // Value of the tone to play when the digital sensor is triggered, can be used to combine multiple tones on a single MIDI channel
+    int lastSendValue;
 };
 
 #endif // _DIGITALSENSOR_HPP_

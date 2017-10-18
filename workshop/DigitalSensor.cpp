@@ -18,12 +18,17 @@ int DigitalSensor::measureValue(void)
   int retVal = 0;
 
   if ( (millis() - lastTimeValueChanged) > TIME_BETWEEN_CHANGES)
-  {
-    if (digitalRead(pin) )
+  { 
+    if (digitalRead(pin) ) 
     {
       retVal = tone;
     }
     lastTimeValueChanged = millis();
+    lastSendValue = retVal;
+  }
+  else
+  {
+    retVal = lastSendValue;
   }
 
   return retVal;
