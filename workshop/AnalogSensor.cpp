@@ -16,7 +16,11 @@ int AnalogSensor::measureValue(void)
 
   retVal = map(filteredReading, 0, maxValue, 0, 127);
 
-  return retVal;
+  int treshold = 64;
+  int onOffReturn = retVal < treshold ? 1 : 0;
+  
+  //return retVal;
+   return onOffReturn;
 }
 
 int AnalogSensor::filterValue(int inputValue)
@@ -26,5 +30,7 @@ int AnalogSensor::filterValue(int inputValue)
 
   return filteredReading;
 }
+
+
 
 

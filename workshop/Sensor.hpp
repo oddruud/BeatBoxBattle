@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 
-#define DEBUG 0 // Turn this to 1 to change the MIDI messages to readable ASCII output
+#define DEBUG 1 // Turn this to 1 to change the MIDI messages to readable ASCII output
 
 #define ASSERT(x) sensorAssert(x, #x, __FILE__, __LINE__) // Macro function used to help debug the code
 

@@ -26,18 +26,19 @@ void setup()
   /////////////////////////////////////
 
 //  DigitalSensor(pin, channel, note)
-  insertSensor(new DigitalSensor(3, 1, 40));  // button
-  insertSensor(new DigitalSensor(4, 1, 50));  // button
+  //insertSensor(new DigitalSensor(3, 1, 40));  // button
+ // insertSensor(new DigitalSensor(4, 1, 50));  // button
 
 //  AnalogSensor(pin, channel, maxValue)
-  insertSensor(new AnalogSensor(0, 2, 690));  //rotary
-  insertSensor(new AnalogSensor(1, 3, 500));  //light
+  insertSensor(new AnalogSensor(3, 2, 690));  //rotary
+  
+ // insertSensor(new AnalogSensor(1, 3, 500));  //light
 
 //  TouchSensor(channel)
-  insertSensor(new TouchSensor(5));
+ // insertSensor(new TouchSensor(5));
 
 //  UltrasonicRanger(pin, channel)
-  insertSensor(new UltrasonicRanger(8, 6));
+ // insertSensor(new UltrasonicRanger(8, 6));
   /////////////////////////////////////
   // DO NOT MODIFY CODE BELOW THIS LINE
   /////////////////////////////////////
